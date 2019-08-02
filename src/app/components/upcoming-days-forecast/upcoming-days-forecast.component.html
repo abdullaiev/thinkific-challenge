@@ -1,0 +1,21 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="name">
+    <td mat-cell *matCellDef="let day"> {{day.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="conditions">
+    <td mat-cell *matCellDef="let day"> {{day.conditions}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="high">
+    <td mat-cell *matCellDef="let day"> {{day.high}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="low">
+    <td mat-cell *matCellDef="let day"> {{day.low}} </td>
+  </ng-container>
+
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

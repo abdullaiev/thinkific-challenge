@@ -1,0 +1,19 @@
+<mat-toolbar class="location-search">
+  <form (submit)="selectCity(cityControl.value)" class="search-form">
+    <mat-form-field class="city-form-field">
+      <input [matAutocomplete]="auto"
+             [formControl]="cityControl"
+             name="city"
+             matInput
+             placeholder="City"
+             aria-label="City">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let city of foundCities | async"
+                    (click)="selectCity(city.name)"
+                    [value]="city.name">
+          <span>{{city.name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</mat-toolbar>

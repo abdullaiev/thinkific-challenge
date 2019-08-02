@@ -1,0 +1,19 @@
+:host {
+  --main-content-max-width: 600px;
+
+  main {
+    max-width: var(--main-content-max-width);
+    margin: 0 auto;
+    padding: 0.5em 1em 1em;
+  }
+
+  app-daily-forecast {
+    margin: 1em 0;
+  }
+
+  app-temperature-toggle {
+    display: flex;
+    justify-content: center;
+    margin: 2em 0;
+  }
+}

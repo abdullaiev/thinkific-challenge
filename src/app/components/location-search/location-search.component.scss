@@ -1,0 +1,19 @@
+:host {
+  .location-search {
+    display: flex;
+    justify-content: center;
+    height: fit-content;
+  }
+
+  .search-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: var(--main-content-max-width);
+    padding-top: 1.25em;
+  }
+
+  .city-form-field {
+    flex: 1;
+  }
+}

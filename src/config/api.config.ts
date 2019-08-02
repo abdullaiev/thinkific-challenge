@@ -1,0 +1,4 @@
+export const ApiConfig = {
+  GOOGLE_MAPS_KEY: 'AIzaSyC2vo1EkJOVizlxEXoCCJVQ0fLbm4fAWUI',
+  OPEN_WEATHER_KEY: 'c07a5e100dc31f24720e695aac79057c'
+};
