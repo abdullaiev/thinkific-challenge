@@ -1,9 +1,8 @@
-import { KelvinToCelsiusPipe } from "src/app/pipes/temperature/kelvin-to-celsius.pipe";
-import { KelvinToFahrenheitPipe } from './kelvin-to-fahrenheit.pipe';
+import { ConvertKelvinPipe } from './convert-kelvin.pipe';
 
-describe('KelvinToFahrenheitPipe', () => {
+describe('ConvertKelvinPipe', () => {
   it('create an instance', () => {
-    const pipe = new KelvinToFahrenheitPipe(new KelvinToCelsiusPipe());
+    const pipe = new ConvertKelvinPipe(new KelvinToCelsiusPipe());
     expect(pipe).toBeTruthy();
   });
 });

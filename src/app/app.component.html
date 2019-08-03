@@ -1,8 +1,28 @@
-<app-location-search></app-location-search>
+<app-location-search
+  (selectWeatherLocation)="updateWeatherLocation($event)">
+</app-location-search>
 
 <main>
-  <app-location-getter></app-location-getter>
-  <app-daily-forecast></app-daily-forecast>
-  <app-upcoming-days-forecast></app-upcoming-days-forecast>
-  <app-temperature-toggle></app-temperature-toggle>
+  <mat-progress-bar
+    *ngIf="isLoadingForecast"
+    mode="indeterminate">
+  </mat-progress-bar>
+
+  <ng-container *ngIf="!isLoadingForecast && currentForecast?.length">
+    <app-daily-forecast
+      [currentWeatherLocation]="currentWeatherLocation"
+      [currentTemperatureUnit]="currentTemperatureUnit"
+      [forecast]="currentForecast[0]">
+    </app-daily-forecast>
+
+    <app-upcoming-days-forecast
+      [currentTemperatureUnit]="currentTemperatureUnit"
+      [upcomingDaysForecast]="currentForecast.slice(1)">
+    </app-upcoming-days-forecast>
+
+    <app-temperature-toggle
+      [currentTemperatureUnit]="currentTemperatureUnit"
+      (newTemperatureUnit)="updateCurrentUnit($event)">
+    </app-temperature-toggle>
+  </ng-container>
 </main>

@@ -1,5 +1,5 @@
-export enum Temperature {
+export enum TemperatureUnit {
   KELVIN,
   CELSIUS,
-  FAHRENHIET
+  FAHRENHEIT
 }

@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TemperatureUnit } from "src/app/enums/temperature.enum";
 
 @Component({
   selector: 'app-temperature-toggle',
   templateUrl: './temperature-toggle.component.html',
   styleUrls: ['./temperature-toggle.component.scss']
 })
-export class TemperatureToggleComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class TemperatureToggleComponent {
+  @Input() currentTemperatureUnit: TemperatureUnit;
+  @Output() newTemperatureUnit = new EventEmitter<TemperatureUnit>();
+  temperatureScale = TemperatureUnit;
 }

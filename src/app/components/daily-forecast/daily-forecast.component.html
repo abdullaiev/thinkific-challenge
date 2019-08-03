@@ -1,12 +1,59 @@
 <mat-card>
   <div class="header">
     <div class="city">
-      <mat-card-title>Vancouver</mat-card-title>
-      <mat-card-subtitle>Canada</mat-card-subtitle>
+      <mat-card-title>
+        {{currentWeatherLocation.description}}
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        {{currentWeatherLocation.secondaryDescription}}
+      </mat-card-subtitle>
     </div>
   </div>
 
   <mat-card-content>
-    Some sort of table with data
+    <div>
+      {{currentThreeHourPartition.dt_txt | date : 'EEEE, MMMM d, h:mm a'}}
+    </div>
+
+    <div *ngIf="currentThreeHourPartition.weather?.length">
+      {{currentThreeHourPartition.weather[0]?.description}}
+    </div>
+
+    <div>
+      <img *ngIf="currentThreeHourPartition.weather.length"
+           [src]="'http://openweathermap.org/img/wn/' + currentThreeHourPartition.weather[0].icon + '@2x.png'"
+           [alt]="currentThreeHourPartition.weather[0]?.description"
+           class="weather-condition-icon">
+    </div>
+
+    <div>
+      {{currentThreeHourPartition.main.temp | convertKelvinTo : currentTemperatureUnit | number : '1.0-0'}}&deg;
+    </div>
+
+    <div>
+      Last three hours precipitation:
+      {{(currentThreeHourPartition.rain && currentThreeHourPartition.rain["3h"] || 0) | number : '1.0-1'}}mm
+    </div>
+
+    <div>
+      Humidity:
+      {{currentThreeHourPartition.main.humidity}}%
+    </div>
+
+    <div class="hourly-forecast">
+      <div *ngFor="let partition of forecast.threeHourPartitions">
+        <img *ngIf="partition.weather.length"
+             [src]="'http://openweathermap.org/img/wn/' + partition.weather[0].icon + '@2x.png'"
+             [alt]="partition.weather[0]?.description">
+        <p>
+          {{partition.main.temp_max | convertKelvinTo : currentTemperatureUnit | number : '1.0-0'}}&deg;
+        </p>
+
+        <p>
+          {{partition.main.temp_min | convertKelvinTo : currentTemperatureUnit | number : '1.0-0'}}&deg;
+        </p>
+      </div>
+    </div>
   </mat-card-content>
 </mat-card>

@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from "@angular/forms";
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from "@angular/material";
+import { of } from "rxjs";
 
-import { Observable } from "rxjs";
-import { debounceTime, flatMap, startWith } from "rxjs/operators";
+import { debounceTime, filter, flatMap } from "rxjs/operators";
+import { WeatherLocation } from "src/app/models/weather-location";
 
 import { GooglePlacesService } from "src/app/services/google-places/google-places.service";
+import AutocompletePrediction = google.maps.places.AutocompletePrediction;
 
 @Component({
   selector: 'app-location-search',
@@ -13,24 +16,51 @@ import { GooglePlacesService } from "src/app/services/google-places/google-place
 })
 
 export class LocationSearchComponent implements OnInit {
-  cityControl = new FormControl();
-  foundCities: Observable<any>;
-  readonly DEBOUNCE_TIMEOUT = 100;
+  @ViewChild(MatAutocompleteTrigger, {static: false}) autoComplete;
+  @ViewChild('placeInput', {static: false}) input;
+  @Output() selectWeatherLocation = new EventEmitter<WeatherLocation>();
+  placeControl = new FormControl();
+  predictions: AutocompletePrediction[] = [];
 
   constructor(private googlePlacesService: GooglePlacesService) {
   }
 
   ngOnInit() {
-    this.foundCities = this.cityControl.valueChanges.pipe(
-      startWith(''),
-      debounceTime(this.DEBOUNCE_TIMEOUT),
-      flatMap((citySearchQuery: string) => {
-        return this.googlePlacesService.getPlaces(citySearchQuery);
-      })
-    );
+    this.subscribeToInputChanges();
   }
 
-  selectCity(city: string) {
-    console.log(city);
+  subscribeToInputChanges() {
+    this.placeControl.valueChanges.pipe(
+      debounceTime(100),
+      filter((searchQuery: string) => {
+        return !(this.predictions.length && this.predictions[0].description === searchQuery);
+      }),
+      flatMap((citySearchQuery: string) => {
+        if (citySearchQuery) {
+          return this.googlePlacesService.getPlaces(citySearchQuery);
+        }
+
+        return of([]);
+      })
+    ).subscribe((predictions: AutocompletePrediction[]) => {
+      this.predictions = predictions || [];
+    });
+  }
+
+  onOptionSelected(event: MatAutocompleteSelectedEvent) {
+    let selectionOption = this.predictions.find((place: AutocompletePrediction) => {
+      return event.option.value === place.description;
+    });
+    this.selectPlace(selectionOption);
+  }
+
+  selectPlace(prediction: AutocompletePrediction) {
+    this.googlePlacesService.getWeatherLocation(prediction).subscribe((location: WeatherLocation) => {
+      this.selectWeatherLocation.emit(location);
+    });
+  }
+
+  trackByFunction(index: number, prediction: AutocompletePrediction) {
+    return prediction ? prediction.place_id : null;
   }
 }

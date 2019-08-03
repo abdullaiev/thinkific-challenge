@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from "@angular/material";
 
 import { UpcomingDaysForecastComponent } from "src/app/components/upcoming-days-forecast/upcoming-days-forecast.component";
+import { PipesModule } from "src/app/pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { UpcomingDaysForecastComponent } from "src/app/components/upcoming-days-
   ],
   imports: [
     CommonModule,
-    MatTableModule
+    MatTableModule,
+    PipesModule
   ],
   exports: [
     UpcomingDaysForecastComponent

@@ -1,3 +1,18 @@
 :host {
   display: block;
+
+  .partition-slider {
+    width: 100%;
+  }
+
+  .hourly-forecast {
+    display: flex;
+    justify-content: space-around;
+    max-width: 100%;
+    overflow-y: scroll;
+
+    img {
+      width: 40px;
+    }
+  }
 }

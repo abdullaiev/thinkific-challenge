@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { TemperatureUnit } from "src/app/enums/temperature.enum";
+import { DailyForecast } from "src/app/models/daily-forecast";
 
 @Component({
   selector: 'app-upcoming-days-forecast',
@@ -6,39 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./upcoming-days-forecast.component.scss']
 })
 export class UpcomingDaysForecastComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'conditions', 'high', 'low'];
-  dataSource = [
-    {
-      name: 'Monday',
-      conditions: 'sunny',
-      high: 30,
-      low: 15
-    },
-    {
-      name: 'Tuesday',
-      conditions: 'sunny',
-      high: 30,
-      low: 15
-    },
-    {
-      name: 'Wednesday',
-      conditions: 'cloudy',
-      high: 30,
-      low: 15
-    },
-    {
-      name: 'Thursday',
-      conditions: 'rainy',
-      high: 30,
-      low: 15
-    },
-    {
-      name: 'Friday',
-      conditions: 'sunny',
-      high: 30,
-      low: 15
-    }
-  ];
+  @Input() currentTemperatureUnit: TemperatureUnit;
+  @Input() upcomingDaysForecast: DailyForecast[];
+  displayedColumns: string[] = ['date', 'conditions', 'high', 'low'];
 
   constructor() { }
 
