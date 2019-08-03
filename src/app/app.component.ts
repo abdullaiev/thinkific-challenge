@@ -12,20 +12,22 @@ import { OpenWeatherService } from "src/app/services/open-weather/open-weather.s
 })
 
 export class AppComponent {
-  currentWeatherLocation: WeatherLocation;
-  currentForecast: DailyForecast[];
-  currentTemperatureUnit = TemperatureUnit.CELSIUS;
+  weatherLocation: WeatherLocation;
+  weatherForecast: DailyForecast[];
+  temperatureUnit = TemperatureUnit.CELSIUS;
+  selectedDayForecast: DailyForecast;
   isLoadingForecast: boolean;
+  selectedDayIndex = 0;
 
   constructor(private weatherService: OpenWeatherService) {
   }
 
-  updateCurrentUnit(unit: TemperatureUnit) {
-    this.currentTemperatureUnit = unit;
+  updateTemperatureUnits(unit: TemperatureUnit) {
+    this.temperatureUnit = unit;
   }
 
   updateWeatherLocation(location: WeatherLocation) {
-    this.currentWeatherLocation = location;
+    this.weatherLocation = location;
     this.getWeatherForecast(location);
   }
 
@@ -38,12 +40,17 @@ export class AppComponent {
         })
       )
       .subscribe((response) => {
-          this.currentForecast = response;
-          console.log("RECEIVED");
+          this.weatherForecast = response;
+          this.selectedDayForecast = response[this.selectedDayIndex];
         }, (error: string) => {
           // todo: error message
-          this.currentForecast = null;
+          this.weatherForecast = null;
         }
       );
+  }
+
+  updateSelectedDay(dayIndex: number) {
+    this.selectedDayIndex = dayIndex;
+    this.selectedDayForecast = this.weatherForecast[dayIndex];
   }
 }

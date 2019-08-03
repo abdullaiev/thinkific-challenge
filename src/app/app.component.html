@@ -8,21 +8,23 @@
     mode="indeterminate">
   </mat-progress-bar>
 
-  <ng-container *ngIf="!isLoadingForecast && currentForecast?.length">
+  <ng-container *ngIf="!isLoadingForecast && weatherForecast?.length">
     <app-daily-forecast
-      [currentWeatherLocation]="currentWeatherLocation"
-      [currentTemperatureUnit]="currentTemperatureUnit"
-      [forecast]="currentForecast[0]">
+      [weatherLocation]="weatherLocation"
+      [temperatureUnit]="temperatureUnit"
+      [dailyForecast]="selectedDayForecast">
     </app-daily-forecast>
 
     <app-upcoming-days-forecast
-      [currentTemperatureUnit]="currentTemperatureUnit"
-      [upcomingDaysForecast]="currentForecast.slice(1)">
+      [temperatureUnit]="temperatureUnit"
+      [upcomingDaysForecast]="weatherForecast"
+      [selectedDayIndex]="selectedDayIndex"
+      (selectDay)="updateSelectedDay($event)">
     </app-upcoming-days-forecast>
 
     <app-temperature-toggle
-      [currentTemperatureUnit]="currentTemperatureUnit"
-      (newTemperatureUnit)="updateCurrentUnit($event)">
+      [currentTemperatureUnit]="temperatureUnit"
+      (updateUnits)="updateTemperatureUnits($event)">
     </app-temperature-toggle>
   </ng-container>
 </main>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TemperatureUnit } from "src/app/enums/temperature.enum";
 import { DailyForecast } from "src/app/models/daily-forecast";
 
@@ -8,13 +8,18 @@ import { DailyForecast } from "src/app/models/daily-forecast";
   styleUrls: ['./upcoming-days-forecast.component.scss']
 })
 export class UpcomingDaysForecastComponent implements OnInit {
-  @Input() currentTemperatureUnit: TemperatureUnit;
+  @Input() temperatureUnit: TemperatureUnit;
   @Input() upcomingDaysForecast: DailyForecast[];
-  displayedColumns: string[] = ['date', 'conditions', 'high', 'low'];
+  @Input() selectedDayIndex: number;
+  @Output() selectDay = new EventEmitter<number>();
+  displayedColumns: string[] = ['day', 'date', 'conditions', 'high', 'low'];
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  selectDayByIndex(index: number) {
+    this.selectDay.emit(index);
+  }
 }

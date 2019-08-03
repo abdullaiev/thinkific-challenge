@@ -10,7 +10,7 @@ export interface DailyForecast {
 
 export interface ThreeHourForecast {
   dt_txt: string;
-  dt: number;
+  time: string;
   main: {
     humidity: number;
     temp: number;

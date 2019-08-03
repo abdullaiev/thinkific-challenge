@@ -8,6 +8,6 @@ import { TemperatureUnit } from "src/app/enums/temperature.enum";
 })
 export class TemperatureToggleComponent {
   @Input() currentTemperatureUnit: TemperatureUnit;
-  @Output() newTemperatureUnit = new EventEmitter<TemperatureUnit>();
+  @Output() updateUnits = new EventEmitter<TemperatureUnit>();
   temperatureScale = TemperatureUnit;
 }

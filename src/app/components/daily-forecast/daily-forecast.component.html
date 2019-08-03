@@ -1,19 +1,15 @@
 <mat-card>
-  <div class="header">
-    <div class="city">
-      <mat-card-title>
-        {{currentWeatherLocation.description}}
-      </mat-card-title>
+  <mat-card-title>
+    {{weatherLocation.description}}
+  </mat-card-title>
 
-      <mat-card-subtitle>
-        {{currentWeatherLocation.secondaryDescription}}
-      </mat-card-subtitle>
-    </div>
-  </div>
+  <mat-card-subtitle>
+    {{weatherLocation.secondaryDescription}}
+  </mat-card-subtitle>
 
   <mat-card-content>
     <div>
-      {{currentThreeHourPartition.dt_txt | date : 'EEEE, MMMM d, h:mm a'}}
+      {{currentThreeHourPartition.dt_txt | date : 'EEEE, MMMM d, HH:mm'}}
     </div>
 
     <div *ngIf="currentThreeHourPartition.weather?.length">
@@ -28,12 +24,7 @@
     </div>
 
     <div>
-      {{currentThreeHourPartition.main.temp | convertKelvinTo : currentTemperatureUnit | number : '1.0-0'}}&deg;
-    </div>
-
-    <div>
-      Last three hours precipitation:
-      {{(currentThreeHourPartition.rain && currentThreeHourPartition.rain["3h"] || 0) | number : '1.0-1'}}mm
+      {{currentThreeHourPartition.main.temp | convertKelvinTo : temperatureUnit | number : '1.0-0'}}&deg;
     </div>
 
     <div>
@@ -42,18 +33,24 @@
     </div>
 
     <div class="hourly-forecast">
-      <div *ngFor="let partition of forecast.threeHourPartitions">
-        <img *ngIf="partition.weather.length"
-             [src]="'http://openweathermap.org/img/wn/' + partition.weather[0].icon + '@2x.png'"
-             [alt]="partition.weather[0]?.description">
-        <p>
-          {{partition.main.temp_max | convertKelvinTo : currentTemperatureUnit | number : '1.0-0'}}&deg;
-        </p>
+      <mat-button-toggle-group class="toggle"
+                               [value]="selectedPartitionIndex">
+        <mat-button-toggle *ngFor="let partition of _dailyForecast.threeHourPartitions; let i = index"
+                           (click)="currentThreeHourPartition = _dailyForecast.threeHourPartitions[i]"
+                           [value]="i"
+                           [attr.aria-label]="partition.dt_txt">
+          <p>
+            {{partition.dt_txt | date : 'HH:mm'}}
+          </p>
 
-        <p>
-          {{partition.main.temp_min | convertKelvinTo : currentTemperatureUnit | number : '1.0-0'}}&deg;
-        </p>
-      </div>
+          <img *ngIf="partition.weather.length"
+               [src]="'http://openweathermap.org/img/wn/' + partition.weather[0].icon + '@2x.png'"
+               [alt]="partition.weather[0]?.description">
+          <p>
+            {{partition.main.temp | convertKelvinTo : temperatureUnit | number : '1.0-0'}}&deg;
+          </p>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
     </div>
   </mat-card-content>
 </mat-card>

@@ -1,12 +1,12 @@
 <mat-button-toggle-group class="toggle"
                          [value]="currentTemperatureUnit">
-  <mat-button-toggle (click)="newTemperatureUnit.emit(temperatureScale.CELSIUS)"
+  <mat-button-toggle (click)="updateUnits.emit(temperatureScale.CELSIUS)"
                      [value]="temperatureScale.CELSIUS"
                      aria-label="Celsius">
     C&deg;
   </mat-button-toggle>
 
-  <mat-button-toggle (click)="newTemperatureUnit.emit(temperatureScale.FAHRENHEIT)"
+  <mat-button-toggle (click)="updateUnits.emit(temperatureScale.FAHRENHEIT)"
                      [value]="temperatureScale.FAHRENHEIT"
                      aria-label="Fahrenheit">
     F&deg;

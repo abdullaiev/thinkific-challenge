@@ -47,12 +47,13 @@ export class OpenWeatherService {
 
     // Group three hour forecast partitions by date.
     for (let partition of forecast.list) {
-      let date = partition.dt_txt.split(' ')[0];
+      let [date, time] = partition.dt_txt.split(' ');
 
       if (!dateMap[date]) {
         dateMap[date] = [];
       }
 
+      partition.time = time;
       dateMap[date].push(partition);
     }
 
@@ -121,6 +122,8 @@ export class OpenWeatherService {
       let delta = fullDayPartitions - firstDayPartitions;
       days[0].threeHourPartitions = days[0].threeHourPartitions.concat(days[1].threeHourPartitions.slice(0, delta + 1));
     }
+
+    days[0].threeHourPartitions[0].dt_txt = new Date().toISOString()
 
     return days.slice(0, 5);
   }

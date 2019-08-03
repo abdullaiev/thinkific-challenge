@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from "@angular/material";
+import { MatButtonToggleModule, MatCardModule } from "@angular/material";
 
 import { PipesModule } from "src/app/pipes/pipes.module";
 import { DailyForecastComponent } from "src/app/components/daily-forecast/daily-forecast.component";
@@ -12,6 +12,7 @@ import { DailyForecastComponent } from "src/app/components/daily-forecast/daily-
   imports: [
     CommonModule,
     MatCardModule,
+    MatButtonToggleModule,
     PipesModule
   ],
   exports: [

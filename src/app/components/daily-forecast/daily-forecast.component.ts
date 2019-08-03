@@ -9,14 +9,21 @@ import { WeatherLocation } from "src/app/models/weather-location";
   styleUrls: ['./daily-forecast.component.scss']
 })
 export class DailyForecastComponent implements OnInit {
-  @Input() currentWeatherLocation: WeatherLocation;
-  @Input() currentTemperatureUnit: TemperatureUnit;
-  @Input() forecast: DailyForecast;
-  @Input() currentThreeHourPartition: ThreeHourForecast;
+  @Input() weatherLocation: WeatherLocation;
+  @Input() temperatureUnit: TemperatureUnit;
+  @Input()
+  set dailyForecast(value: DailyForecast) {
+    this._dailyForecast = value;
+    if (this._dailyForecast) {
+      this.currentThreeHourPartition = this._dailyForecast.threeHourPartitions[0];
+    }
+  }
+  _dailyForecast: DailyForecast
+  currentThreeHourPartition: ThreeHourForecast;
+  selectedPartitionIndex = 0;
 
   constructor() { }
 
   ngOnInit() {
-    this.currentThreeHourPartition = this.forecast.threeHourPartitions[0];
   }
 }
