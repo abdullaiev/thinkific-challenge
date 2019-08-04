@@ -31,12 +31,14 @@
       <p>Wind: {{currentPartition.wind.speed}}m/s at {{currentPartition.wind.deg}}&deg;</p>
     </div>
 
-    <div class="daily-forecast__partitions">
-      <mat-button-toggle-group [value]="selectedPartitionIndex">
+    <div class="daily-forecast__partitions-container">
+      <mat-button-toggle-group [value]="selectedPartitionIndex"
+                               class="daily-forecast__partitions">
         <mat-button-toggle *ngFor="let partition of _dailyForecast.threeHourPartitions; let i = index"
                            (click)="currentPartition = _dailyForecast.threeHourPartitions[i]"
                            [value]="i"
-                           [attr.aria-label]="partition.dt_txt">
+                           [attr.aria-label]="partition.dt_txt"
+                           class="daily-forecast__partition-toggle">
           <p>
             {{partition.dt_txt | date : 'HH:mm'}}
           </p>

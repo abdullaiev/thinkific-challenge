@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TemperatureUnit } from 'src/app/enums/temperature.enum';
 import { DailyForecast, ThreeHourForecast } from 'src/app/data-models/daily-forecast';
 import { WeatherLocation } from 'src/app/data-models/weather-location';
@@ -9,7 +9,7 @@ import { OpenWeatherToFontAwesome} from 'src/app/mappings/icon.mappings';
   templateUrl: './daily-forecast.component.html',
   styleUrls: ['./daily-forecast.component.scss']
 })
-export class DailyForecastComponent implements OnInit {
+export class DailyForecastComponent {
   @Input() weatherLocation: WeatherLocation;
   @Input() temperatureUnit: TemperatureUnit;
   @Input()
@@ -24,9 +24,4 @@ export class DailyForecastComponent implements OnInit {
   currentPartition: ThreeHourForecast;
   selectedPartitionIndex = 0;
   openWeatherToFontAwesome = OpenWeatherToFontAwesome;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 }

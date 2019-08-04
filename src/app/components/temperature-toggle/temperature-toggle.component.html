@@ -1,5 +1,4 @@
-<mat-button-toggle-group class="toggle"
-                         [value]="currentTemperatureUnit">
+<mat-button-toggle-group [value]="currentTemperatureUnit">
   <mat-button-toggle (click)="updateUnits.emit(temperatureScale.CELSIUS)"
                      [value]="temperatureScale.CELSIUS"
                      aria-label="Celsius">

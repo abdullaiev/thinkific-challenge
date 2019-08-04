@@ -10,8 +10,9 @@
       font-size: 3rem;
     }
 
-    &_secondary-content {
-      margin: 1rem 0;
+    &__secondary-content {
+      margin-bottom: 2rem;
+      color: rgba(0,0,0,.54);
       font-size: 1rem;
     }
 
@@ -21,18 +22,30 @@
       font-size: 1.5rem;
     }
 
-    &__partitions {
+    &__partitions-container {
       width: 100%;
       max-width: 100%;
       overflow-y: scroll;
+    }
+
+    &__partitions {
+      min-width: 100%;
+      box-sizing: border-box;
 
       p {
         margin: 0;
+        line-height: 2.4rem;
       }
 
       fa-icon {
         font-size: 1rem;
       }
+    }
+
+    &__partition-toggle {
+      // Take 1/8 of the available width.
+      width: 100 / 8 * 1%;
+      min-width: 60px;
     }
   }
 }

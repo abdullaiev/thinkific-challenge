@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material';
 import { of } from 'rxjs';
 
-import { debounceTime, filter, flatMap } from 'rxjs/operators';
+import { filter, flatMap } from 'rxjs/operators';
 import { WeatherLocation } from 'src/app/data-models/weather-location';
 
 import { GooglePlacesService } from 'src/app/services/google-places/google-places.service';
@@ -31,7 +31,6 @@ export class LocationSearchComponent implements OnInit {
 
   subscribeToInputChanges() {
     this.placeControl.valueChanges.pipe(
-      debounceTime(100),
       filter((searchQuery: string) => {
         return !(this.predictions.length && this.predictions[0].description === searchQuery);
       }),

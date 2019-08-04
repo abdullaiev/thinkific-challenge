@@ -8,6 +8,10 @@
     mode="indeterminate">
   </mat-progress-bar>
 
+  <app-no-content
+    *ngIf="!isLoadingForecast && !weatherForecast?.length">
+  </app-no-content>
+
   <ng-container *ngIf="!isLoadingForecast && weatherForecast?.length">
     <app-daily-forecast
       [weatherLocation]="weatherLocation"

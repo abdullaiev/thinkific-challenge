@@ -40,6 +40,7 @@ export class AppComponent {
         })
       )
       .subscribe((response) => {
+          this.selectedDayIndex = 0;
           this.weatherForecast = response;
           this.selectedDayForecast = response[this.selectedDayIndex];
         }, (error: string) => {

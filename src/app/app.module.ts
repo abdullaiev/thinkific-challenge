@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from 'src/app/app.component';
 import { DailyForecastModule } from 'src/app/components/daily-forecast/daily-forecast.module';
 import { LocationSearchModule } from 'src/app/components/location-search/location-search.module';
+import { NoContentModule } from 'src/app/components/no-content/no-content.module';
 import { TemperatureToggleModule } from 'src/app/components/temperature-toggle/temperature-toggle.module';
 import { UpcomingDaysForecastModule } from 'src/app/components/upcoming-days-forecast/upcoming-days-forecast.module';
 
@@ -20,6 +21,7 @@ import { UpcomingDaysForecastModule } from 'src/app/components/upcoming-days-for
     BrowserAnimationsModule,
     MatProgressBarModule,
     LocationSearchModule,
+    NoContentModule,
     TemperatureToggleModule,
     DailyForecastModule,
     UpcomingDaysForecastModule
