@@ -12,8 +12,8 @@ import { OpenWeatherToFontAwesome } from 'src/app/mappings/icon.mappings';
 export class UpcomingDaysForecastComponent implements OnInit {
   @Input() temperatureUnit: TemperatureUnit;
   @Input() upcomingDaysForecast: DailyForecast[];
-  @Input() selectedDayIndex: number;
   @Output() selectDay = new EventEmitter<number>();
+  selectedDayIndex = 0;
   displayedColumns: string[] = ['day', 'date', 'conditions', 'high', 'low'];
   openWeatherToFontAwesome = OpenWeatherToFontAwesome;
 
@@ -23,6 +23,7 @@ export class UpcomingDaysForecastComponent implements OnInit {
   }
 
   selectDayByIndex(index: number) {
+    this.selectedDayIndex = index;
     this.selectDay.emit(index);
   }
 }

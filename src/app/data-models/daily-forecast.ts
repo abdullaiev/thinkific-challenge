@@ -1,5 +1,6 @@
 export interface DailyForecast {
   date: string;
+  index: number;
   temperature: {
     min: number;
     max: number;

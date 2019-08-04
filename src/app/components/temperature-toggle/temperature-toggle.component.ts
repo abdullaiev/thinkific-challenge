@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { TemperatureUnit } from 'src/app/enums/temperature.enum';
 
 @Component({

@@ -11,16 +11,20 @@ export class ConvertKelvinPipe implements PipeTransform {
   constructor(private numberPipe: DecimalPipe) {
   }
 
-  transform(value: any, unit: TemperatureUnit): any {
+  transform(value: any, outputUnit: TemperatureUnit): any {
+    if (value < 0) {
+      throw new Error(`[ConvertKelvinPipe] ERROR: ${value} is smaller than the absolute zero.`);
+    }
+
     const celsius = this.ABSOLUTE_ZERO + value;
     let temperature;
 
-    if (unit === TemperatureUnit.CELSIUS) {
+    if (outputUnit === TemperatureUnit.CELSIUS) {
       temperature = celsius;
-    } else if (unit === TemperatureUnit.FAHRENHEIT) {
+    } else if (outputUnit === TemperatureUnit.FAHRENHEIT) {
       temperature = celsius * 9 / 5 + 32;
     } else {
-      throw new Error(`ConvertKelvinPipe error: ${unit} unit is not supported.`);
+      throw new Error(`[ConvertKelvinPipe] ERROR: ${outputUnit} unit is not supported.`);
     }
 
     return this.numberPipe.transform(temperature, '1.0-0');

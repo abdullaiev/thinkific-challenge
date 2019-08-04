@@ -8,34 +8,36 @@
   </mat-card-subtitle>
 
   <mat-card-content>
-    <div class="daily-forecast__main-content">
-      <div>
-        {{currentPartition.main.temp | convertKelvinTo : temperatureUnit}}&deg;
+    <ng-container *ngIf="currentPartition">
+      <div class="daily-forecast__main-content">
+        <div>
+          {{currentPartition.main.temp | convertKelvinTo : temperatureUnit}}&deg;
+        </div>
+
+        <div>
+          <fa-icon [icon]="openWeatherToFontAwesome[currentPartition.weather[0]?.icon]"></fa-icon>
+        </div>
+
+        <div class="daily-forecast__condition-description">
+          {{currentPartition.weather[0]?.description}}
+        </div>
       </div>
 
-      <div>
-        <fa-icon [icon]="openWeatherToFontAwesome[currentPartition.weather[0]?.icon]"></fa-icon>
+      <div class="daily-forecast__secondary-content">
+        <p>
+          {{currentPartition.dt_txt | date : 'EEEE, MMMM d, HH:mm'}}
+        </p>
+        <p>Humidity: {{currentPartition.main.humidity}}%</p>
+        <p>Pressure: {{currentPartition.main.pressure | number : '1.0-0'}} mbar</p>
+        <p>Wind: {{currentPartition.wind.speed}}m/s at {{currentPartition.wind.deg | number : '1.0-0'}}&deg;</p>
       </div>
+    </ng-container>
 
-      <div class="daily-forecast__condition-description">
-        {{currentPartition.weather[0]?.description}}
-      </div>
-    </div>
-
-    <div class="daily-forecast__secondary-content">
-      <p>
-        {{currentPartition.dt_txt | date : 'EEEE, MMMM d, HH:mm'}}
-      </p>
-      <p>Humidity: {{currentPartition.main.humidity}}%</p>
-      <p>Pressure: {{currentPartition.main.pressure}}</p>
-      <p>Wind: {{currentPartition.wind.speed}}m/s at {{currentPartition.wind.deg}}&deg;</p>
-    </div>
-
-    <div class="daily-forecast__partitions-container">
+    <div *ngIf="forecast" class="daily-forecast__partitions-container">
       <mat-button-toggle-group [value]="selectedPartitionIndex"
                                class="daily-forecast__partitions">
-        <mat-button-toggle *ngFor="let partition of _dailyForecast.threeHourPartitions; let i = index"
-                           (click)="currentPartition = _dailyForecast.threeHourPartitions[i]"
+        <mat-button-toggle *ngFor="let partition of forecast.threeHourPartitions; let i = index"
+                           (click)="currentPartition = forecast.threeHourPartitions[i]"
                            [value]="i"
                            [attr.aria-label]="partition.dt_txt"
                            class="daily-forecast__partition-toggle">

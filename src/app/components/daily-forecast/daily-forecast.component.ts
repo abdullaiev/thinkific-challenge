@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+
 import { TemperatureUnit } from 'src/app/enums/temperature.enum';
 import { DailyForecast, ThreeHourForecast } from 'src/app/data-models/daily-forecast';
 import { WeatherLocation } from 'src/app/data-models/weather-location';
@@ -10,18 +11,22 @@ import { OpenWeatherToFontAwesome} from 'src/app/mappings/icon.mappings';
   styleUrls: ['./daily-forecast.component.scss']
 })
 export class DailyForecastComponent {
-  @Input() weatherLocation: WeatherLocation;
   @Input() temperatureUnit: TemperatureUnit;
+  @Input() weatherLocation: WeatherLocation;
   @Input()
   set dailyForecast(value: DailyForecast) {
-    this._dailyForecast = value;
-    if (this._dailyForecast) {
-      this.selectedPartitionIndex = 0;
-      this.currentPartition = this._dailyForecast.threeHourPartitions[this.selectedPartitionIndex];
+    if (value) {
+      this.forecast = value;
+      // Deselect current toggle button.
+      this.selectedPartitionIndex = null;
+      // Select the first available partition for the first day.
+      // All subsequent days should display noon partition by default.
+      const index = this.forecast.index === 0 ? 0 : 4;
+      this.currentPartition = this.forecast.threeHourPartitions[index];
     }
   }
-  _dailyForecast: DailyForecast;
   currentPartition: ThreeHourForecast;
-  selectedPartitionIndex = 0;
+  forecast: DailyForecast;
+  selectedPartitionIndex: number;
   openWeatherToFontAwesome = OpenWeatherToFontAwesome;
 }

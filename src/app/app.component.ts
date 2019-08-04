@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+
 import { finalize } from 'rxjs/operators';
+
 import { TemperatureUnit } from 'src/app/enums/temperature.enum';
 import { DailyForecast } from 'src/app/data-models/daily-forecast';
 import { WeatherLocation } from 'src/app/data-models/weather-location';
@@ -15,7 +17,6 @@ export class AppComponent {
   weatherLocation: WeatherLocation;
   weatherForecast: DailyForecast[];
   temperatureUnit = TemperatureUnit.CELSIUS;
-  selectedDayForecast: DailyForecast;
   isLoadingForecast: boolean;
   selectedDayIndex = 0;
 
@@ -39,10 +40,9 @@ export class AppComponent {
           this.isLoadingForecast = false;
         })
       )
-      .subscribe((response) => {
+      .subscribe((response: DailyForecast[]) => {
           this.selectedDayIndex = 0;
           this.weatherForecast = response;
-          this.selectedDayForecast = response[this.selectedDayIndex];
         }, (error: string) => {
           // todo: error message
           this.weatherForecast = null;
@@ -52,6 +52,5 @@ export class AppComponent {
 
   updateSelectedDay(dayIndex: number) {
     this.selectedDayIndex = dayIndex;
-    this.selectedDayForecast = this.weatherForecast[dayIndex];
   }
 }

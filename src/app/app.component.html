@@ -13,16 +13,15 @@
   </app-no-content>
 
   <ng-container *ngIf="!isLoadingForecast && weatherForecast?.length">
-    <app-daily-forecast
+    <app-daily-forecast *ngIf="weatherForecast"
       [weatherLocation]="weatherLocation"
-      [temperatureUnit]="temperatureUnit"
-      [dailyForecast]="selectedDayForecast">
+      [dailyForecast]="weatherForecast[selectedDayIndex]"
+      [temperatureUnit]="temperatureUnit">
     </app-daily-forecast>
 
     <app-upcoming-days-forecast
       [temperatureUnit]="temperatureUnit"
       [upcomingDaysForecast]="weatherForecast"
-      [selectedDayIndex]="selectedDayIndex"
       (selectDay)="updateSelectedDay($event)">
     </app-upcoming-days-forecast>
 

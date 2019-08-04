@@ -18,6 +18,7 @@ export class OpenWeatherService {
   static getUrl(endpoint: string, params: object) {
     let url = `${ApiConfig.OpenWeather.API}${endpoint}?APPID=${ApiConfig.OpenWeather.APP_ID}`;
 
+    // tslint:disable-next-line:forin
     for (const key in params) {
       url += `&${key}=${params[key]}`;
     }
@@ -25,12 +26,10 @@ export class OpenWeatherService {
     return url;
   }
 
-  static parseHourlyForecast(forecast): DailyForecast[] {
+  static groupHourPartitionsByDate(response: any) {
     const dateMap = {};
-    const days: DailyForecast[] = [];
-
-    // Group three hour forecast partitions by date.
-    for (const partition of forecast.list) {
+    const forecastList = response && response.list || [];
+    for (const partition of forecastList) {
       const [date, time] = partition.dt_txt.split(' ');
 
       if (!dateMap[date]) {
@@ -40,8 +39,15 @@ export class OpenWeatherService {
       partition.time = time;
       dateMap[date].push(partition);
     }
+    return dateMap;
+  }
+
+  static getForecastDays(dateMap: any): DailyForecast[] {
+    const days: DailyForecast[] = [];
+    let index = 0;
 
     // Store each day's min and max temperature as well as most frequent weather condition.
+    // tslint:disable-next-line:forin
     for (const date in dateMap) {
       const partitions = dateMap[date];
       let min = Infinity;
@@ -59,15 +65,23 @@ export class OpenWeatherService {
 
       days.push({
         date,
+        index: index++,
         temperature: {min, max},
         threeHourPartitions: partitions
       } as DailyForecast);
     }
 
+    return days;
+  }
+
+  static setWeatherConditionIcons(forecastDays: DailyForecast[]) {
+    const days = [...forecastDays];
+
     // Get most frequent daily weather icon for each day.
     for (const day of days) {
       const conditions = day.threeHourPartitions.map(partition => {
         // Retrieve icon name and condition description.
+        // tslint:disable-next-line:prefer-const
         let {icon, description} = partition.weather[0];
 
         if (icon && icon[icon.length - 1] === 'n') {
@@ -98,18 +112,26 @@ export class OpenWeatherService {
       });
     }
 
+    return days;
+  }
+
+  static setFirstDatePartitions(days: DailyForecast[]) {
+    if (!days.length) {
+      return days;
+    }
+
     // Make sure that the first day has partitions for full 24 hours.
     const firstDayPartitions = days[0].threeHourPartitions.length;
     const fullDayPartitions = 7;
-
     if (firstDayPartitions < fullDayPartitions) {
       const delta = fullDayPartitions - firstDayPartitions;
       days[0].threeHourPartitions = days[0].threeHourPartitions.concat(days[1].threeHourPartitions.slice(0, delta + 1));
     }
 
+    // Display current time for the first partition of the first day.
+    // This is to avoid displaying time in the past.
     days[0].threeHourPartitions[0].dt_txt = new Date().toISOString();
-
-    return days.slice(0, 5);
+    return days;
   }
 
   getFiveDayForecast(location: WeatherLocation): Observable<DailyForecast[]> {
@@ -117,13 +139,18 @@ export class OpenWeatherService {
     return this.http.get(url).pipe(
       map((response: any) => {
         if (response.cod !== '200') {
-          throw new Error(`[OpenWeatherService] ERROR: Forecast request failed for
-                                  lat: ${location.coords.lat}, lon: ${location.coords.lon}`);
+          throw new Error(`[OpenWeatherService] ERROR: Forecast request failed for ` +
+                          `lat: ${location.coords.lat}, lon: ${location.coords.lon}`);
         }
         return response;
       }),
-      map((response: any) => {
-        return OpenWeatherService.parseHourlyForecast(response);
+      map(OpenWeatherService.groupHourPartitionsByDate),
+      map(OpenWeatherService.getForecastDays),
+      map(OpenWeatherService.setWeatherConditionIcons),
+      map(OpenWeatherService.setFirstDatePartitions),
+      map((days: DailyForecast[]) => {
+        // Remove leftover partitions for the sixth day.
+        return days.slice(0, 5);
       })
     );
   }

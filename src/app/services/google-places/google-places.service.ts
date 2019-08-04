@@ -2,26 +2,27 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import AutocompletePrediction = google.maps.places.AutocompletePrediction;
+
 import { WeatherLocation } from 'src/app/data-models/weather-location';
 import { ApiConfig } from 'src/config/api.config';
-
-import AutocompletePrediction = google.maps.places.AutocompletePrediction;
 
 @Injectable({
   providedIn: 'root'
 })
 export class GooglePlacesService {
+  googleAutocomplete = new google.maps.places.AutocompleteService();
 
   constructor(private http: HttpClient) {
   }
-  googleAutocomplete = new google.maps.places.AutocompleteService();
-
 
   static getUrl(endpoint: string, params: object) {
     let url = `${ApiConfig.GoogleMaps.API}${endpoint}?key=${ApiConfig.GoogleMaps.API_KEY}`;
 
+    // tslint:disable-next-line:forin
     for (const key in params) {
       url += `&${key}=${params[key]}`;
     }
@@ -29,14 +30,14 @@ export class GooglePlacesService {
     return url;
   }
 
-  getPlaces(searchQuery: string): Observable<any> {
+  getPlaces(searchQuery: string): Observable<AutocompletePrediction[]> {
     const body = {
       input: searchQuery
     };
 
     const placesSubject = new Subject<AutocompletePrediction[]>();
 
-    this.googleAutocomplete.getPlacePredictions(body, (predictions) => {
+    this.googleAutocomplete.getPlacePredictions(body, (predictions: AutocompletePrediction[]) => {
       placesSubject.next(predictions);
       placesSubject.complete();
     });
