@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TemperatureUnit } from "src/app/enums/temperature.enum";
-import { DailyForecast } from "src/app/models/daily-forecast";
+
+import { TemperatureUnit } from 'src/app/enums/temperature.enum';
+import { DailyForecast } from 'src/app/data-models/daily-forecast';
+import { OpenWeatherToFontAwesome } from 'src/app/mappings/icon.mappings';
 
 @Component({
   selector: 'app-upcoming-days-forecast',
@@ -13,6 +15,7 @@ export class UpcomingDaysForecastComponent implements OnInit {
   @Input() selectedDayIndex: number;
   @Output() selectDay = new EventEmitter<number>();
   displayedColumns: string[] = ['day', 'date', 'conditions', 'high', 'low'];
+  openWeatherToFontAwesome = OpenWeatherToFontAwesome;
 
   constructor() { }
 

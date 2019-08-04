@@ -1,12 +1,12 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl } from "@angular/forms";
-import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from "@angular/material";
-import { of } from "rxjs";
+import { FormControl } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material';
+import { of } from 'rxjs';
 
-import { debounceTime, filter, flatMap } from "rxjs/operators";
-import { WeatherLocation } from "src/app/models/weather-location";
+import { debounceTime, filter, flatMap } from 'rxjs/operators';
+import { WeatherLocation } from 'src/app/data-models/weather-location';
 
-import { GooglePlacesService } from "src/app/services/google-places/google-places.service";
+import { GooglePlacesService } from 'src/app/services/google-places/google-places.service';
 import AutocompletePrediction = google.maps.places.AutocompletePrediction;
 
 @Component({
@@ -48,7 +48,7 @@ export class LocationSearchComponent implements OnInit {
   }
 
   onOptionSelected(event: MatAutocompleteSelectedEvent) {
-    let selectionOption = this.predictions.find((place: AutocompletePrediction) => {
+    const selectionOption = this.predictions.find((place: AutocompletePrediction) => {
       return event.option.value === place.description;
     });
     this.selectPlace(selectionOption);

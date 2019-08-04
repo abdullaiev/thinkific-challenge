@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { DailyForecast, WeatherCondition } from "src/app/models/daily-forecast";
-import { WeatherLocation } from "src/app/models/weather-location";
+import { HttpClient } from '@angular/common/http';
 
-import { ApiConfig } from "src/config/api.config";
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { DailyForecast, WeatherCondition } from 'src/app/data-models/daily-forecast';
+import { WeatherLocation } from 'src/app/data-models/weather-location';
+import { ApiConfig } from 'src/config/api.config';
 
 @Injectable({
   providedIn: 'root'
@@ -14,27 +15,10 @@ export class OpenWeatherService {
   constructor(private http: HttpClient) {
   }
 
-  getFiveDayForecast(location: WeatherLocation): Observable<DailyForecast[]> {
-    let url = OpenWeatherService.getUrl('data/2.5/forecast', location.coords);
-    return this.http.get(url).pipe(
-      map((response: any) => {
-        if (response.cod !== '200') {
-          throw new Error(`[OpenWeatherService] ERROR: Forecast request failed for 
-                                  lat: ${location.coords.lat}, lon: ${location.coords.lon}`);
-        }
-        return response;
-      }),
-      map((response: any) => {
-        return OpenWeatherService.parseHourlyForecast(response);
-      })
-    );
-
-  }
-
-  static getUrl(endpoint: string, params: Object) {
+  static getUrl(endpoint: string, params: object) {
     let url = `${ApiConfig.OpenWeather.API}${endpoint}?APPID=${ApiConfig.OpenWeather.APP_ID}`;
 
-    for (let key in params) {
+    for (const key in params) {
       url += `&${key}=${params[key]}`;
     }
 
@@ -42,12 +26,12 @@ export class OpenWeatherService {
   }
 
   static parseHourlyForecast(forecast): DailyForecast[] {
-    let dateMap = {};
-    let days: DailyForecast[] = [];
+    const dateMap = {};
+    const days: DailyForecast[] = [];
 
     // Group three hour forecast partitions by date.
-    for (let partition of forecast.list) {
-      let [date, time] = partition.dt_txt.split(' ');
+    for (const partition of forecast.list) {
+      const [date, time] = partition.dt_txt.split(' ');
 
       if (!dateMap[date]) {
         dateMap[date] = [];
@@ -58,12 +42,12 @@ export class OpenWeatherService {
     }
 
     // Store each day's min and max temperature as well as most frequent weather condition.
-    for (let date in dateMap) {
-      let partitions = dateMap[date];
+    for (const date in dateMap) {
+      const partitions = dateMap[date];
       let min = Infinity;
       let max = -Infinity;
 
-      for (let partition of partitions) {
+      for (const partition of partitions) {
         if (partition.main.temp_min < min) {
           min = partition.main.temp_min;
         }
@@ -81,8 +65,8 @@ export class OpenWeatherService {
     }
 
     // Get most frequent daily weather icon for each day.
-    for (let day of days) {
-      let conditions = day.threeHourPartitions.map(partition => {
+    for (const day of days) {
+      const conditions = day.threeHourPartitions.map(partition => {
         // Retrieve icon name and condition description.
         let {icon, description} = partition.weather[0];
 
@@ -95,8 +79,8 @@ export class OpenWeatherService {
       });
 
       // Use a hash map to calculate frequency of each condition during the day.
-      let iconMap = {};
-      for (let condition of conditions) {
+      const iconMap = {};
+      for (const condition of conditions) {
         if (iconMap[condition.icon]) {
           iconMap[condition.icon]++;
         } else {
@@ -105,26 +89,42 @@ export class OpenWeatherService {
       }
 
       // Sort daily conditions such that the most frequent condition is the first item of the array.
-      let iconsSortedByFrequency = Object.keys(iconMap).sort((icon1, icon2) => {
+      const iconsSortedByFrequency = Object.keys(iconMap).sort((icon1, icon2) => {
         return iconMap[icon2] - iconMap[icon1];
       });
 
       day.weather = conditions.find((condition: WeatherCondition) => {
-        return condition.icon === iconsSortedByFrequency[0]
+        return condition.icon === iconsSortedByFrequency[0];
       });
     }
 
     // Make sure that the first day has partitions for full 24 hours.
-    let firstDayPartitions = days[0].threeHourPartitions.length;
+    const firstDayPartitions = days[0].threeHourPartitions.length;
     const fullDayPartitions = 7;
 
     if (firstDayPartitions < fullDayPartitions) {
-      let delta = fullDayPartitions - firstDayPartitions;
+      const delta = fullDayPartitions - firstDayPartitions;
       days[0].threeHourPartitions = days[0].threeHourPartitions.concat(days[1].threeHourPartitions.slice(0, delta + 1));
     }
 
-    days[0].threeHourPartitions[0].dt_txt = new Date().toISOString()
+    days[0].threeHourPartitions[0].dt_txt = new Date().toISOString();
 
     return days.slice(0, 5);
+  }
+
+  getFiveDayForecast(location: WeatherLocation): Observable<DailyForecast[]> {
+    const url = OpenWeatherService.getUrl('data/2.5/forecast', location.coords);
+    return this.http.get(url).pipe(
+      map((response: any) => {
+        if (response.cod !== '200') {
+          throw new Error(`[OpenWeatherService] ERROR: Forecast request failed for
+                                  lat: ${location.coords.lat}, lon: ${location.coords.lon}`);
+        }
+        return response;
+      }),
+      map((response: any) => {
+        return OpenWeatherService.parseHourlyForecast(response);
+      })
+    );
   }
 }

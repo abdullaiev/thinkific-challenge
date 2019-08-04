@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="daily-forecast">
   <mat-card-title>
     {{weatherLocation.description}}
   </mat-card-title>
@@ -8,46 +8,43 @@
   </mat-card-subtitle>
 
   <mat-card-content>
-    <div>
-      {{currentThreeHourPartition.dt_txt | date : 'EEEE, MMMM d, HH:mm'}}
+    <div class="daily-forecast__main-content">
+      <div>
+        {{currentPartition.main.temp | convertKelvinTo : temperatureUnit}}&deg;
+      </div>
+
+      <div>
+        <fa-icon [icon]="openWeatherToFontAwesome[currentPartition.weather[0]?.icon]"></fa-icon>
+      </div>
+
+      <div class="daily-forecast__condition-description">
+        {{currentPartition.weather[0]?.description}}
+      </div>
     </div>
 
-    <div *ngIf="currentThreeHourPartition.weather?.length">
-      {{currentThreeHourPartition.weather[0]?.description}}
+    <div class="daily-forecast__secondary-content">
+      <p>
+        {{currentPartition.dt_txt | date : 'EEEE, MMMM d, HH:mm'}}
+      </p>
+      <p>Humidity: {{currentPartition.main.humidity}}%</p>
+      <p>Pressure: {{currentPartition.main.pressure}}</p>
+      <p>Wind: {{currentPartition.wind.speed}}m/s at {{currentPartition.wind.deg}}&deg;</p>
     </div>
 
-    <div>
-      <img *ngIf="currentThreeHourPartition.weather.length"
-           [src]="'http://openweathermap.org/img/wn/' + currentThreeHourPartition.weather[0].icon + '@2x.png'"
-           [alt]="currentThreeHourPartition.weather[0]?.description"
-           class="weather-condition-icon">
-    </div>
-
-    <div>
-      {{currentThreeHourPartition.main.temp | convertKelvinTo : temperatureUnit | number : '1.0-0'}}&deg;
-    </div>
-
-    <div>
-      Humidity:
-      {{currentThreeHourPartition.main.humidity}}%
-    </div>
-
-    <div class="hourly-forecast">
-      <mat-button-toggle-group class="toggle"
-                               [value]="selectedPartitionIndex">
+    <div class="daily-forecast__partitions">
+      <mat-button-toggle-group [value]="selectedPartitionIndex">
         <mat-button-toggle *ngFor="let partition of _dailyForecast.threeHourPartitions; let i = index"
-                           (click)="currentThreeHourPartition = _dailyForecast.threeHourPartitions[i]"
+                           (click)="currentPartition = _dailyForecast.threeHourPartitions[i]"
                            [value]="i"
                            [attr.aria-label]="partition.dt_txt">
           <p>
             {{partition.dt_txt | date : 'HH:mm'}}
           </p>
 
-          <img *ngIf="partition.weather.length"
-               [src]="'http://openweathermap.org/img/wn/' + partition.weather[0].icon + '@2x.png'"
-               [alt]="partition.weather[0]?.description">
+          <fa-icon [icon]="openWeatherToFontAwesome[partition.weather[0].icon]"></fa-icon>
+
           <p>
-            {{partition.main.temp | convertKelvinTo : temperatureUnit | number : '1.0-0'}}&deg;
+            {{partition.main.temp | convertKelvinTo : temperatureUnit}}&deg;
           </p>
         </mat-button-toggle>
       </mat-button-toggle-group>

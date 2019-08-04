@@ -6,10 +6,10 @@ import {
   MatIconModule,
   MatInputModule,
   MatToolbarModule, MatTooltipModule
-} from "@angular/material";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+} from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { LocationSearchComponent } from "src/app/components/location-search/location-search.component";
+import { LocationSearchComponent } from 'src/app/components/location-search/location-search.component';
 
 @NgModule({
   declarations: [

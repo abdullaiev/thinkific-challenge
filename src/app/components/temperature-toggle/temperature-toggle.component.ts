@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { TemperatureUnit } from "src/app/enums/temperature.enum";
+import { TemperatureUnit } from 'src/app/enums/temperature.enum';
 
 @Component({
   selector: 'app-temperature-toggle',

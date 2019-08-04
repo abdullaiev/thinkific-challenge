@@ -4,5 +4,5 @@ export interface WeatherLocation {
   coords: {
     lat: number;
     lon: number;
-  }
+  };
 }

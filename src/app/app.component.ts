@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { finalize } from "rxjs/operators";
-import { TemperatureUnit } from "src/app/enums/temperature.enum";
-import { DailyForecast } from "src/app/models/daily-forecast";
-import { WeatherLocation } from "src/app/models/weather-location";
-import { OpenWeatherService } from "src/app/services/open-weather/open-weather.service";
+import { finalize } from 'rxjs/operators';
+import { TemperatureUnit } from 'src/app/enums/temperature.enum';
+import { DailyForecast } from 'src/app/data-models/daily-forecast';
+import { WeatherLocation } from 'src/app/data-models/weather-location';
+import { OpenWeatherService } from 'src/app/services/open-weather/open-weather.service';
 
 @Component({
   selector: 'app-root',

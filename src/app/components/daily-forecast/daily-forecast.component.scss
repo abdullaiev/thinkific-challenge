@@ -1,12 +1,38 @@
 :host {
   display: block;
 
-  .hourly-forecast {
-    max-width: 100%;
-    overflow-y: scroll;
+  .daily-forecast {
+    &__main-content {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 2rem 0;
+      font-size: 3rem;
+    }
 
-    img {
-      width: 40px;
+    &_secondary-content {
+      margin: 1rem 0;
+      font-size: 1rem;
+    }
+
+    &__condition-description {
+      text-transform: capitalize;
+      max-width: 33%;
+      font-size: 1.5rem;
+    }
+
+    &__partitions {
+      width: 100%;
+      max-width: 100%;
+      overflow-y: scroll;
+
+      p {
+        margin: 0;
+      }
+
+      fa-icon {
+        font-size: 1rem;
+      }
     }
   }
 }

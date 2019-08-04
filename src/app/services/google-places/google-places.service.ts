@@ -1,11 +1,11 @@
 /// <reference types="@types/googlemaps" />
 
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from "rxjs";
-import { map } from "rxjs/operators";
-import { WeatherLocation } from "src/app/models/weather-location";
-import { ApiConfig } from "src/config/api.config";
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { WeatherLocation } from 'src/app/data-models/weather-location';
+import { ApiConfig } from 'src/config/api.config';
 
 import AutocompletePrediction = google.maps.places.AutocompletePrediction;
 
@@ -13,17 +13,28 @@ import AutocompletePrediction = google.maps.places.AutocompletePrediction;
   providedIn: 'root'
 })
 export class GooglePlacesService {
-  googleAutocomplete = new google.maps.places.AutocompleteService();
 
   constructor(private http: HttpClient) {
   }
+  googleAutocomplete = new google.maps.places.AutocompleteService();
+
+
+  static getUrl(endpoint: string, params: object) {
+    let url = `${ApiConfig.GoogleMaps.API}${endpoint}?key=${ApiConfig.GoogleMaps.API_KEY}`;
+
+    for (const key in params) {
+      url += `&${key}=${params[key]}`;
+    }
+
+    return url;
+  }
 
   getPlaces(searchQuery: string): Observable<any> {
-    let body = {
+    const body = {
       input: searchQuery
     };
 
-    let placesSubject = new Subject<AutocompletePrediction[]>();
+    const placesSubject = new Subject<AutocompletePrediction[]>();
 
     this.googleAutocomplete.getPlacePredictions(body, (predictions) => {
       placesSubject.next(predictions);
@@ -34,7 +45,7 @@ export class GooglePlacesService {
   }
 
   getWeatherLocation(place: AutocompletePrediction): Observable<WeatherLocation> {
-    let url = GooglePlacesService.getUrl('geocode/json', {
+    const url = GooglePlacesService.getUrl('geocode/json', {
       place_id: place.place_id
     });
 
@@ -47,8 +58,8 @@ export class GooglePlacesService {
         return response.results;
       }),
       map((results: any) => {
-        let location = results && results[0];
-        let geometry = location && location.geometry;
+        const location = results && results[0];
+        const geometry = location && location.geometry;
 
         if (!geometry) {
           throw new Error(`[GooglePlacesService] ERROR: geometry property is missing for place_id ${place.place_id}`);
@@ -66,16 +77,5 @@ export class GooglePlacesService {
           coords
         };
       }));
-  }
-
-
-  static getUrl(endpoint: string, params: Object) {
-    let url = `${ApiConfig.GoogleMaps.API}${endpoint}?key=${ApiConfig.GoogleMaps.API_KEY}`;
-
-    for (let key in params) {
-      url += `&${key}=${params[key]}`;
-    }
-
-    return url;
   }
 }

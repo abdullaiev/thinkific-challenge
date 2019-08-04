@@ -13,6 +13,7 @@ export interface ThreeHourForecast {
   time: string;
   main: {
     humidity: number;
+    pressure: number;
     temp: number;
     temp_min: number;
     temp_max: number;
@@ -23,7 +24,7 @@ export interface ThreeHourForecast {
     deg: number;
   };
   rain: {
-    "3h": number;
+    '3h': number;
   };
 }
 

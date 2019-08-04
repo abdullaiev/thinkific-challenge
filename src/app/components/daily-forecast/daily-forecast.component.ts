@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TemperatureUnit } from "src/app/enums/temperature.enum";
-import { DailyForecast, ThreeHourForecast } from "src/app/models/daily-forecast";
-import { WeatherLocation } from "src/app/models/weather-location";
+import { TemperatureUnit } from 'src/app/enums/temperature.enum';
+import { DailyForecast, ThreeHourForecast } from 'src/app/data-models/daily-forecast';
+import { WeatherLocation } from 'src/app/data-models/weather-location';
+import { OpenWeatherToFontAwesome} from 'src/app/mappings/icon.mappings';
 
 @Component({
   selector: 'app-daily-forecast',
@@ -15,12 +16,14 @@ export class DailyForecastComponent implements OnInit {
   set dailyForecast(value: DailyForecast) {
     this._dailyForecast = value;
     if (this._dailyForecast) {
-      this.currentThreeHourPartition = this._dailyForecast.threeHourPartitions[0];
+      this.selectedPartitionIndex = 0;
+      this.currentPartition = this._dailyForecast.threeHourPartitions[this.selectedPartitionIndex];
     }
   }
-  _dailyForecast: DailyForecast
-  currentThreeHourPartition: ThreeHourForecast;
+  _dailyForecast: DailyForecast;
+  currentPartition: ThreeHourForecast;
   selectedPartitionIndex = 0;
+  openWeatherToFontAwesome = OpenWeatherToFontAwesome;
 
   constructor() { }
 
