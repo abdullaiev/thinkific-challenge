@@ -52,7 +52,7 @@ export class LocationSearchComponent implements OnInit {
   getGeoCoordinates(prediction: AutocompletePrediction) {
     this.googlePlacesService.getWeatherLocation(prediction).subscribe((location: WeatherLocation) => {
       this.selectWeatherLocation.emit(location);
-    }, () => {});
+    });
   }
 
   // Track places in autocomplete by their place_id for performance.
