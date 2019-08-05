@@ -8,7 +8,11 @@
              name="city"
              matInput
              placeholder="Place or city"
-             aria-label="City">
+             aria-label="City"
+             autocapitalize="off"
+             autocomplete="off"
+             autocorrect="off"
+             spellcheck="false">
       <mat-autocomplete (optionSelected)="onOptionSelected($event)"
                         #auto="matAutocomplete">
         <mat-option *ngFor="let place of predictions; trackBy: trackByFunction"

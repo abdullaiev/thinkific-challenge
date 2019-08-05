@@ -51,6 +51,8 @@ export class LocationSearchComponent implements OnInit {
 
   getGeoCoordinates(prediction: AutocompletePrediction) {
     this.googlePlacesService.getWeatherLocation(prediction).subscribe((location: WeatherLocation) => {
+      // Hide keyboard.
+      this.input.nativeElement.blur();
       this.selectWeatherLocation.emit(location);
     });
   }

@@ -105,6 +105,7 @@ describe('LocationSearchComponent', () => {
       TestBed.get(GooglePlacesService).getWeatherLocation.and.returnValue(of(mockWeatherLocation));
       spyOn(component.selectWeatherLocation, 'emit');
       component.predictions = getMockPredictions();
+      fixture.detectChanges();
       component.onOptionSelected({
         option: {
           value: 'Vancouver, BC'
