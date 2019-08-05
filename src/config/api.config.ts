@@ -1,6 +1,6 @@
 export const ApiConfig = {
   OpenWeather: {
-    API: 'http://api.openweathermap.org/',
+    API: 'https://api.openweathermap.org/',
     APP_ID: '004cf397255b0b492b39dc329bbba249'
   },
   GoogleMaps: {
