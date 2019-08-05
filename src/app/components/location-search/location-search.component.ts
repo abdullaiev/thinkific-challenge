@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { debounceTime, switchMap } from 'rxjs/operators';
 
 import { WeatherLocation } from 'src/app/data-models/weather-location';
 import { GooglePlacesService } from 'src/app/services/google-places/google-places.service';
@@ -29,12 +29,12 @@ export class LocationSearchComponent implements OnInit {
 
   subscribeToInputChanges() {
     this.placeControl.valueChanges.pipe(
+      debounceTime(200),
       switchMap((citySearchQuery: string) => {
         if (citySearchQuery) {
           return this.googlePlacesService.getPlaces(citySearchQuery);
         }
-
-        // Do not send request if search query has been emptied.
+        // Do not send a request if search query has been emptied.
         return of([]);
       })
     ).subscribe((predictions: AutocompletePrediction[]) => {

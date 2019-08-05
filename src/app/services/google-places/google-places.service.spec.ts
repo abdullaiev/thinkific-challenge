@@ -8,7 +8,8 @@ import { GooglePlacesService } from './google-places.service';
 describe('GooglePlacesService', () => {
   let service: GooglePlacesService;
   let mockAutocompletePredictions: AutocompletePrediction[];
-  const httpMock = jasmine.createSpyObj('HttpClient', ['get']);
+  let httpMock;
+  let ngZoneMock;
 
   beforeEach(() => {
     mockAutocompletePredictions = [
@@ -32,7 +33,12 @@ describe('GooglePlacesService', () => {
         }
       }
     };
-    service = new GooglePlacesService(httpMock);
+    httpMock = jasmine.createSpyObj('HttpClient', ['get']);
+    ngZoneMock = jasmine.createSpyObj('NgZoneMock', ['run']);
+    ngZoneMock.run.and.callFake((callback) => {
+      callback();
+    });
+    service = new GooglePlacesService(httpMock, ngZoneMock);
   });
 
   it('should be created', () => {

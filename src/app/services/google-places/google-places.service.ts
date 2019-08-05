@@ -1,7 +1,7 @@
 /// <reference types="@types/googlemaps" />
 
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,7 +16,8 @@ import { ApiConfig } from 'src/config/api.config';
 export class GooglePlacesService {
   googleAutocomplete = new google.maps.places.AutocompleteService();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private ngZone: NgZone) {
   }
 
   static getUrl(endpoint: string, params: object) {
@@ -39,8 +40,10 @@ export class GooglePlacesService {
     const placesSubject = new Subject<AutocompletePrediction[]>();
 
     this.googleAutocomplete.getPlacePredictions(body, (predictions: AutocompletePrediction[]) => {
-      placesSubject.next(predictions);
-      placesSubject.complete();
+      this.ngZone.run(() => {
+        placesSubject.next(predictions);
+        placesSubject.complete();
+      });
     });
 
     return placesSubject.asObservable();

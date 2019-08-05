@@ -2,16 +2,14 @@
   "name": "thinkific-challenge",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
     "start": "ng serve",
     "prebuild": "ng lint",
     "build": "ng build --prod --aot",
-    "predeploy": "ng lint",
-    "deploy": "ng build --prod --aot --output-path docs --base-href /thinkific-challenge/",
+    "predeploy": "ng test --watch=false && ng lint",
+    "deploy": "ng build --prod --aot --output-path docs --base-href https://iabdullaiev.github.io/thinkific-challenge/",
     "test": "ng test",
     "test:coverage": "ng test --code-coverage",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent, MatFormField } from '@angular/material';
 
@@ -56,21 +56,40 @@ describe('LocationSearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should listen to search input value changes', () => {
-    const mockPredictions = getMockPredictions();
-    TestBed.get(GooglePlacesService).getPlaces.and.returnValue(of(mockPredictions));
-    fixture.detectChanges();
-    component.placeControl.setValue('Vanc');
-    expect(TestBed.get(GooglePlacesService).getPlaces).toHaveBeenCalledWith('Vanc');
-    expect(component.predictions).toEqual(mockPredictions);
-  });
+  describe('method: subscribeToInputChanges', () => {
+    let mockPredictions: AutocompletePrediction[];
 
-  it('should empty search autocomplete predictions is search query has been cleared', () => {
-    component.predictions = getMockPredictions();
-    fixture.detectChanges();
-    component.placeControl.setValue('');
-    expect(TestBed.get(GooglePlacesService).getPlaces).not.toHaveBeenCalled();
-    expect(component.predictions.length).toEqual(0);
+    beforeEach(() => {
+      mockPredictions = getMockPredictions();
+      TestBed.get(GooglePlacesService).getPlaces.and.returnValue(of(mockPredictions));
+    });
+
+    it('should listen to search input value changes', fakeAsync(() => {
+      fixture.detectChanges();
+      component.placeControl.setValue('Vanc');
+      tick(200);
+      expect(TestBed.get(GooglePlacesService).getPlaces).toHaveBeenCalledWith('Vanc');
+      expect(component.predictions).toEqual(mockPredictions);
+    }));
+
+    it('should empty search autocomplete predictions is search query has been cleared', fakeAsync(() => {
+      component.predictions = getMockPredictions();
+      fixture.detectChanges();
+      component.placeControl.setValue('');
+      tick(200);
+      expect(TestBed.get(GooglePlacesService).getPlaces).not.toHaveBeenCalled();
+      expect(component.predictions.length).toEqual(0);
+    }));
+
+    it('should debounce user input with 200ms delay', fakeAsync(() => {
+      fixture.detectChanges();
+      component.placeControl.setValue('Vanc');
+      tick(100);
+      component.placeControl.setValue('Vancouver');
+      tick(200);
+      expect(TestBed.get(GooglePlacesService).getPlaces).not.toHaveBeenCalledWith('Vanc');
+      expect(TestBed.get(GooglePlacesService).getPlaces).toHaveBeenCalledWith('Vancouver');
+    }));
   });
 
   describe('method: onOptionSelected', () => {
