@@ -17,8 +17,6 @@ export class DailyForecastComponent {
   set dailyForecast(value: DailyForecast) {
     if (value) {
       this.forecast = value;
-      // Deselect current toggle button.
-      this.selectedPartitionIndex = null;
       // Select the first available partition for the first day.
       // All subsequent days should display noon partition by default.
       const index = this.forecast.index === 0 ? 0 : 4;
@@ -27,6 +25,5 @@ export class DailyForecastComponent {
   }
   currentPartition: ThreeHourForecast;
   forecast: DailyForecast;
-  selectedPartitionIndex: number;
   openWeatherToFontAwesome = OpenWeatherToFontAwesome;
 }

@@ -40,14 +40,6 @@ describe('DailyForecastComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should deselect current three hour partition upon day change', () => {
-    component.selectedPartitionIndex = 3;
-    component.dailyForecast = {
-      threeHourPartitions: []
-    } as DailyForecast;
-    expect(component.selectedPartitionIndex).toEqual(null);
-  });
-
   it('should use the first available three hour partition for the first day of the forecast', () => {
     component.dailyForecast = {
       index: 0,

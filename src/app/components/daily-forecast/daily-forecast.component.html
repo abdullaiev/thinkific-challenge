@@ -36,8 +36,7 @@
     </ng-container>
 
     <div *ngIf="forecast" class="daily-forecast__partitions-container">
-      <mat-button-toggle-group [value]="selectedPartitionIndex"
-                               class="daily-forecast__partitions">
+      <mat-button-toggle-group class="daily-forecast__partitions">
         <mat-button-toggle *ngFor="let partition of forecast.threeHourPartitions; let i = index"
                            (click)="currentPartition = forecast.threeHourPartitions[i]"
                            [value]="i"
