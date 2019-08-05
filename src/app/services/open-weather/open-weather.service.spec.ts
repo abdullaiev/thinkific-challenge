@@ -8,7 +8,7 @@ import { OpenWeatherService } from './open-weather.service';
 const getWeatherMockData = () => {
   return [
     {
-      dt_txt: '2019-08-05 7:00',
+      dt_txt: '2019-08-05 07:00:00',
       main: {
         temp_min: 290,
         temp_max: 293
@@ -21,7 +21,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-05 10:00',
+      dt_txt: '2019-08-05 10:00:00',
       main: {
         temp_min: 288,
         temp_max: 290
@@ -34,7 +34,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-05 13:00',
+      dt_txt: '2019-08-05 13:00:00',
       main: {
         temp_min: 285,
         temp_max: 288
@@ -47,7 +47,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-05 16:00',
+      dt_txt: '2019-08-05 16:00:00',
       main: {
         temp_min: 281,
         temp_max: 285
@@ -60,7 +60,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-05 19:00',
+      dt_txt: '2019-08-05 19:00:00',
       main: {
         temp_min: 280,
         temp_max: 281
@@ -73,7 +73,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-05 22:00',
+      dt_txt: '2019-08-05 22:00:00',
       main: {
         temp_min: 280,
         temp_max: 281
@@ -86,7 +86,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-06 01:00',
+      dt_txt: '2019-08-06 01:00:00',
       main: {
         temp_min: 281,
         temp_max: 285
@@ -99,7 +99,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-06 04:00',
+      dt_txt: '2019-08-06 04:00:00',
       main: {
         temp_min: 285,
         temp_max: 290
@@ -112,7 +112,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-06 07:00',
+      dt_txt: '2019-08-06 07:00:00',
       main: {
         temp_min: 290,
         temp_max: 294
@@ -125,7 +125,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-06 10:00',
+      dt_txt: '2019-08-06 10:00:00',
       main: {
         temp_min: 294,
         temp_max: 299
@@ -138,7 +138,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-06 13:00',
+      dt_txt: '2019-08-06 13:00:00',
       main: {
         temp_min: 290,
         temp_max: 294
@@ -151,7 +151,7 @@ const getWeatherMockData = () => {
       ]
     },
     {
-      dt_txt: '2019-08-06 16:00',
+      dt_txt: '2019-08-06 16:00:00',
       main: {
         temp_min: 275,
         temp_max: 280

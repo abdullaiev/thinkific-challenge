@@ -33,7 +33,8 @@ export class OpenWeatherService {
 
     for (const partition of forecastList) {
       // OpenWeather returns time in GMT 0 timezone. Convert it to local time.
-      partition.localTime = new Date(partition.dt_txt + ' GMT+0000');
+      const time = partition.dt_txt.replace(/\s+/g, 'T') + 'Z';
+      partition.localTime = new Date(time);
       const date = partition.localTime.toDateString();
       const hours = partition.localTime.getHours();
 
