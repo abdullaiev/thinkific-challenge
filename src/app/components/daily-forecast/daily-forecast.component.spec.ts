@@ -53,11 +53,11 @@ describe('DailyForecastComponent', () => {
       index: 0,
       threeHourPartitions: [
         {
-          time: '15:48'
+          dt_txt: '2019-08-05 11:00'
         }
       ]
     } as DailyForecast;
-    expect(component.currentPartition.time).toEqual('15:48');
+    expect(component.currentPartition.dt_txt).toEqual('2019-08-05 11:00');
   });
 
   it('should use the afternoon partition for the upcoming days', () => {
@@ -67,9 +67,9 @@ describe('DailyForecastComponent', () => {
         time: ''
       })
     } as DailyForecast;
-    forecast.threeHourPartitions[4].time = '12:00';
+    forecast.threeHourPartitions[4].dt_txt = '12:00';
     component.dailyForecast = forecast;
-    expect(component.currentPartition.time).toEqual('12:00');
+    expect(component.currentPartition.dt_txt).toEqual('12:00');
   });
 
   it('should not attempt to update the selected partition if forecast is not provided', () => {

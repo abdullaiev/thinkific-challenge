@@ -11,7 +11,8 @@ export interface DailyForecast {
 
 export interface ThreeHourForecast {
   dt_txt: string;
-  time: string;
+  isDaylight: boolean;
+  localTime: Date;
   main: {
     humidity: number;
     pressure: number;

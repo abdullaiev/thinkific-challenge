@@ -32,13 +32,19 @@ export class OpenWeatherService {
     const forecastList = response && response.list || [];
 
     for (const partition of forecastList) {
-      const [date, time] = partition.dt_txt.split(' ');
+      // OpenWeather returns time in GMT 0 timezone. Convert it to local time.
+      partition.localTime = new Date(partition.dt_txt + ' GMT+0000');
+      const date = partition.localTime.toDateString();
+      const hours = partition.localTime.getHours();
+
+      // isDaylight should be rather set based on current location sunset and sunrise times.
+      // use hardcoded values for this POC application.
+      partition.isDaylight = hours >= 7 && hours <= 21;
 
       if (!dateMap[date]) {
         dateMap[date] = [];
       }
 
-      partition.time = time;
       dateMap[date].push(partition);
     }
 
@@ -90,9 +96,14 @@ export class OpenWeatherService {
         // tslint:disable-next-line:prefer-const
         let {icon, description} = partition.weather[0];
 
-        if (icon && icon[icon.length - 1] === 'n') {
-          // Replace a night icon with a daylight icon.
-          icon = icon.slice(0, icon.length - 1) + 'd';
+        if (icon) {
+          // Update partition icon based on daylight.
+          partition.weather[0].icon = icon.slice(0, icon.length - 1) + (partition.isDaylight ? 'd' : 'n');
+
+          if (icon[icon.length - 1] === 'n') {
+            // Use only daylight icons for the upcoming days forecast view.
+            icon = icon.slice(0, icon.length - 1) + 'd';
+          }
         }
 
         return {icon, description};
@@ -135,9 +146,6 @@ export class OpenWeatherService {
       days[0].threeHourPartitions = days[0].threeHourPartitions.concat(days[1].threeHourPartitions.slice(0, delta + 1));
     }
 
-    // Display current time for the first partition of the first day.
-    // This is to avoid displaying time in the past.
-    days[0].threeHourPartitions[0].dt_txt = new Date().toISOString();
     return days;
   }
 

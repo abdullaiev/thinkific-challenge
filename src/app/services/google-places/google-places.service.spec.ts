@@ -34,7 +34,7 @@ describe('GooglePlacesService', () => {
       }
     };
     httpMock = jasmine.createSpyObj('HttpClient', ['get']);
-    ngZoneMock = jasmine.createSpyObj('NgZoneMock', ['run']);
+    ngZoneMock = jasmine.createSpyObj('NgZone', ['run']);
     ngZoneMock.run.and.callFake((callback) => {
       callback();
     });

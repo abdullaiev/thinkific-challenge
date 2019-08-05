@@ -27,7 +27,7 @@
 
       <div class="daily-forecast__secondary-content">
         <p>
-          {{currentPartition.dt_txt | date : 'EEEE, MMMM d, HH:mm'}}
+          {{currentPartition.localTime | date : 'EEEE, MMMM d, HH:mm'}}
         </p>
         <p>Humidity: {{currentPartition.main.humidity}}%</p>
         <p>Pressure: {{currentPartition.main.pressure | number : '1.0-0'}} mbar</p>
@@ -41,10 +41,10 @@
         <mat-button-toggle *ngFor="let partition of forecast.threeHourPartitions; let i = index"
                            (click)="currentPartition = forecast.threeHourPartitions[i]"
                            [value]="i"
-                           [attr.aria-label]="partition.dt_txt"
+                           [attr.aria-label]="partition.localTime.toLocaleTimeString()"
                            class="daily-forecast__partition-toggle">
           <p>
-            {{partition.dt_txt | date : 'HH:mm'}}
+            {{partition.localTime | date : 'HH:mm'}}
           </p>
 
           <fa-icon [icon]="openWeatherToFontAwesome[partition.weather[0].icon]"></fa-icon>
