@@ -22,9 +22,10 @@ export class GooglePlacesService {
   static getUrl(endpoint: string, params: object) {
     let url = `${ApiConfig.GoogleMaps.API}${endpoint}?key=${ApiConfig.GoogleMaps.API_KEY}`;
 
-    // tslint:disable-next-line:forin
     for (const key in params) {
-      url += `&${key}=${params[key]}`;
+      if (params.hasOwnProperty(key)) {
+        url += `&${key}=${params[key]}`;
+      }
     }
 
     return url;

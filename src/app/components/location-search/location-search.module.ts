@@ -23,8 +23,7 @@ import { LocationSearchComponent } from 'src/app/components/location-search/loca
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
-    MatAutocompleteModule,
-    MatTooltipModule
+    MatAutocompleteModule
   ],
   exports: [
     LocationSearchComponent

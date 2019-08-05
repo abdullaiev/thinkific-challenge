@@ -15,19 +15,19 @@
 
   <ng-container matColumnDef="conditions">
     <td mat-cell *matCellDef="let day">
-      <fa-icon [icon]="openWeatherToFontAwesome[day.weather.icon]"></fa-icon>
+      <fa-icon [icon]="openWeatherToFontAwesome[day.weather?.icon]"></fa-icon>
     </td>
   </ng-container>
 
   <ng-container matColumnDef="high">
     <td mat-cell *matCellDef="let day">
-      {{day.temperature.max | convertKelvinTo : temperatureUnit}}&deg;
+      {{day.temperature?.max | convertKelvinTo : temperatureUnit}}&deg;
     </td>
   </ng-container>
 
   <ng-container matColumnDef="low">
     <td mat-cell *matCellDef="let day">
-      {{day.temperature.min | convertKelvinTo : temperatureUnit}}&deg;
+      {{day.temperature?.min | convertKelvinTo : temperatureUnit}}&deg;
     </td>
   </ng-container>
 

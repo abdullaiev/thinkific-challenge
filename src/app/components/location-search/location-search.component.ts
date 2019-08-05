@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -15,7 +15,6 @@ import AutocompletePrediction = google.maps.places.AutocompletePrediction;
   styleUrls: ['./location-search.component.scss']
 })
 export class LocationSearchComponent implements OnInit {
-  @ViewChild(MatAutocompleteTrigger, {static: false}) autoComplete;
   @ViewChild('placeInput', {static: false}) input;
   @Output() selectWeatherLocation = new EventEmitter<WeatherLocation>();
   placeControl = new FormControl();
@@ -39,7 +38,7 @@ export class LocationSearchComponent implements OnInit {
         return of([]);
       })
     ).subscribe((predictions: AutocompletePrediction[]) => {
-      this.predictions = predictions || [];
+      this.predictions = predictions;
     });
   }
 
@@ -47,13 +46,13 @@ export class LocationSearchComponent implements OnInit {
     const selectionOption = this.predictions.find((place: AutocompletePrediction) => {
       return event.option.value === place.description;
     });
-    this.selectPlace(selectionOption);
+    this.getGeoCoordinates(selectionOption);
   }
 
-  selectPlace(prediction: AutocompletePrediction) {
+  getGeoCoordinates(prediction: AutocompletePrediction) {
     this.googlePlacesService.getWeatherLocation(prediction).subscribe((location: WeatherLocation) => {
       this.selectWeatherLocation.emit(location);
-    });
+    }, () => {});
   }
 
   // Track places in autocomplete by their place_id for performance.

@@ -1,11 +1,13 @@
 <mat-card class="daily-forecast">
-  <mat-card-title>
-    {{weatherLocation.description}}
-  </mat-card-title>
+  <ng-container *ngIf="weatherLocation">
+    <mat-card-title>
+      {{weatherLocation.description}}
+    </mat-card-title>
 
-  <mat-card-subtitle>
-    {{weatherLocation.secondaryDescription}}
-  </mat-card-subtitle>
+    <mat-card-subtitle>
+      {{weatherLocation.secondaryDescription}}
+    </mat-card-subtitle>
+  </ng-container>
 
   <mat-card-content>
     <ng-container *ngIf="currentPartition">

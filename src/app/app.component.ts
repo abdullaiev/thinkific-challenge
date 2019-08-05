@@ -23,13 +23,17 @@ export class AppComponent {
   constructor(private weatherService: OpenWeatherService) {
   }
 
-  updateTemperatureUnits(unit: TemperatureUnit) {
-    this.temperatureUnit = unit;
-  }
-
   updateWeatherLocation(location: WeatherLocation) {
     this.weatherLocation = location;
     this.getWeatherForecast(location);
+  }
+
+  updateSelectedDay(dayIndex: number) {
+    this.selectedDayIndex = dayIndex;
+  }
+
+  updateTemperatureUnits(unit: TemperatureUnit) {
+    this.temperatureUnit = unit;
   }
 
   getWeatherForecast(location: WeatherLocation) {
@@ -41,16 +45,12 @@ export class AppComponent {
         })
       )
       .subscribe((response: DailyForecast[]) => {
+          // Reset currently selected day.
           this.selectedDayIndex = 0;
           this.weatherForecast = response;
         }, (error: string) => {
-          // todo: error message
           this.weatherForecast = null;
         }
       );
-  }
-
-  updateSelectedDay(dayIndex: number) {
-    this.selectedDayIndex = dayIndex;
   }
 }

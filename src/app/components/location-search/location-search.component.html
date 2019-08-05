@@ -1,7 +1,8 @@
 <mat-toolbar class="location-search">
   <form class="location-search__form">
     <mat-form-field class="location-search__place-form-field">
-      <input [matAutocomplete]="auto"
+      <input class="location-search__place-input"
+             [matAutocomplete]="auto"
              [formControl]="placeControl"
              #placeInput
              name="city"

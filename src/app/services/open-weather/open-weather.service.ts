@@ -18,9 +18,10 @@ export class OpenWeatherService {
   static getUrl(endpoint: string, params: object) {
     let url = `${ApiConfig.OpenWeather.API}${endpoint}?APPID=${ApiConfig.OpenWeather.APP_ID}`;
 
-    // tslint:disable-next-line:forin
     for (const key in params) {
-      url += `&${key}=${params[key]}`;
+      if (params.hasOwnProperty(key)) {
+        url += `&${key}=${params[key]}`;
+      }
     }
 
     return url;
@@ -29,6 +30,7 @@ export class OpenWeatherService {
   static groupHourPartitionsByDate(response: any) {
     const dateMap = {};
     const forecastList = response && response.list || [];
+
     for (const partition of forecastList) {
       const [date, time] = partition.dt_txt.split(' ');
 
@@ -39,6 +41,7 @@ export class OpenWeatherService {
       partition.time = time;
       dateMap[date].push(partition);
     }
+
     return dateMap;
   }
 
@@ -47,8 +50,11 @@ export class OpenWeatherService {
     let index = 0;
 
     // Store each day's min and max temperature as well as most frequent weather condition.
-    // tslint:disable-next-line:forin
     for (const date in dateMap) {
+      if (!dateMap.hasOwnProperty(date)) {
+        continue;
+      }
+
       const partitions = dateMap[date];
       let min = Infinity;
       let max = -Infinity;
@@ -123,6 +129,7 @@ export class OpenWeatherService {
     // Make sure that the first day has partitions for full 24 hours.
     const firstDayPartitions = days[0].threeHourPartitions.length;
     const fullDayPartitions = 7;
+
     if (firstDayPartitions < fullDayPartitions) {
       const delta = fullDayPartitions - firstDayPartitions;
       days[0].threeHourPartitions = days[0].threeHourPartitions.concat(days[1].threeHourPartitions.slice(0, delta + 1));

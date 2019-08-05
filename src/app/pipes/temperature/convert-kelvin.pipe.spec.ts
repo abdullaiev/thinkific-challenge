@@ -26,6 +26,12 @@ describe('ConvertKelvinPipe', () => {
     }).toThrow();
   });
 
+  it('should throw an error if output param is not CELSIUS or FAHRENHEIT', () => {
+    expect(() => {
+      pipe.transform(123, TemperatureUnit.KELVIN);
+    }).toThrow();
+  });
+
   describe('convert to Celsius', () => {
     it('should handle positive values', () => {
       const celsius = pipe.transform(274.15, TemperatureUnit.CELSIUS);
@@ -64,30 +70,34 @@ describe('ConvertKelvinPipe', () => {
       expect(fahrenheit).toEqual('32');
     });
 
-    // todo: update tests below.
-    // it('should handle negative values', () => {
-    //   const fahrenheit = pipe.transform(272.15, TemperatureUnit.FAHRENHEIT);
-    //   expect(fahrenheit).toEqual(-1);
-    // });
-    //
-    // it('should correctly round down positive values', () => {
-    //   const fahrenheit = pipe.transform(273.3, TemperatureUnit.FAHRENHEIT);
-    //   expect(fahrenheit).toEqual(0);
-    // });
-    //
-    // it('should correctly round up positive values', () => {
-    //   const fahrenheit = pipe.transform(274, TemperatureUnit.FAHRENHEIT);
-    //   expect(fahrenheit).toEqual(1);
-    // });
-    //
-    // it('should correctly round down negative values', () => {
-    //   const fahrenheit = pipe.transform(272.3, TemperatureUnit.FAHRENHEIT);
-    //   expect(fahrenheit).toEqual(-1);
-    // });
-    //
-    // it('should correctly round up negative values', () => {
-    //   const fahrenheit = pipe.transform(273, TemperatureUnit.FAHRENHEIT);
-    //   expect(fahrenheit).toEqual(0);
-    // });
+    it('should handle zero degrees', () => {
+      const fahrenheit = pipe.transform(255.37, TemperatureUnit.FAHRENHEIT);
+      expect(fahrenheit).toEqual('0');
+    });
+
+    it('should handle negative values', () => {
+      const fahrenheit = pipe.transform(254.82, TemperatureUnit.FAHRENHEIT);
+      expect(fahrenheit).toEqual('-1');
+    });
+
+    it('should correctly round down positive values', () => {
+      const fahrenheit = pipe.transform(255.6, TemperatureUnit.FAHRENHEIT);
+      expect(fahrenheit).toEqual('0');
+    });
+
+    it('should correctly round up positive values', () => {
+      const fahrenheit = pipe.transform(255.8, TemperatureUnit.FAHRENHEIT);
+      expect(fahrenheit).toEqual('1');
+    });
+
+    it('should correctly round down negative values', () => {
+      const fahrenheit = pipe.transform(254.9, TemperatureUnit.FAHRENHEIT);
+      expect(fahrenheit).toEqual('-1');
+    });
+
+    it('should correctly round up negative values', () => {
+      const fahrenheit = pipe.transform(255.2, TemperatureUnit.FAHRENHEIT);
+      expect(fahrenheit).toEqual('0');
+    });
   });
 });
