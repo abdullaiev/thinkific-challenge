@@ -6,7 +6,7 @@
     "prebuild": "ng lint",
     "build": "ng build --prod --aot",
     "predeploy": "ng test --watch=false && ng lint",
-    "deploy": "ng build --prod --aot --output-path docs --base-href thinkific-challenge",
+    "deploy": "ng build --prod --aot --output-path docs --base-href thinkific-challenge && cp docs/index.html docs/404.html && git add docs/* -A",
     "test": "ng test",
     "test:coverage": "ng test --code-coverage",
     "lint": "ng lint"
