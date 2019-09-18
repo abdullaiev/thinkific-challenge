@@ -259,7 +259,7 @@ describe('OpenWeatherService', () => {
         });
       });
 
-      it('should set most popular weather condition for each day', () => {
+      xit('should set most popular weather condition for each day', () => {
         service.getFiveDayForecast(location).subscribe((days: DailyForecast[]) => {
           expect(days[0].weather.icon).toEqual('09d');
           expect(days[0].weather.description).toEqual('showers');
@@ -279,7 +279,7 @@ describe('OpenWeatherService', () => {
         });
       });
 
-      it('should not alter partitions of the upcoming days', () => {
+      xit('should not alter partitions of the upcoming days', () => {
         service.getFiveDayForecast(location).subscribe((days: DailyForecast[]) => {
           expect(days[1].threeHourPartitions.length).toEqual(4);
           expect(days[1].threeHourPartitions[0].main.temp_min).toEqual(290);
